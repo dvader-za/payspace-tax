@@ -3,12 +3,17 @@ using System.Collections.Generic;
 
 namespace TaxCalculator
 {
-    public static class CalculatorFactory
+    public class StaticCalculatorFactory : ICalculatorFactory
     {
-        private static Dictionary<string, ITaxCalculation> _calculators = new Dictionary<string, ITaxCalculation>();
-        private static Dictionary<string, ITaxSettings> _settings = new Dictionary<string, ITaxSettings>();
+        private Dictionary<string, ITaxCalculation> _calculators = new Dictionary<string, ITaxCalculation>();
+        private Dictionary<string, ITaxSettings> _settings = new Dictionary<string, ITaxSettings>();
 
-        public static ITaxCalculation GetCalculator(string postalCode)
+        public (ITaxCalculation calculator, ITaxSettings settings) GetCalculator(string postalCode)
+        {
+            (ITaxCalculation calculator, ITaxSettings settings) result = (calculator: GetCalculatorInternal(postalCode), settings: GetSettingsInternal(postalCode));
+            return result;
+        }
+        private ITaxCalculation GetCalculatorInternal(string postalCode)
         {
             if (!_calculators.ContainsKey(postalCode))
             {
@@ -26,7 +31,7 @@ namespace TaxCalculator
             return _calculators[postalCode];
         }
 
-        public static ITaxSettings GetSettings(string postalCode)
+        private ITaxSettings GetSettingsInternal(string postalCode)
         {
             if (!_settings.ContainsKey(postalCode))
             {
@@ -42,11 +47,7 @@ namespace TaxCalculator
                 _settings[postalCode] = settings;
             }
             return _settings[postalCode];
-        }
-
-        public static double GetTaxValue(double amount, string postalCode){
-            return GetCalculator(postalCode).Calculate(amount, GetSettings(postalCode));
-        }
+        }        
     }
 
 }

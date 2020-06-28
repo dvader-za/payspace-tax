@@ -2,10 +2,10 @@ namespace TaxCalculator
 {
     public class FlatRateTaxCalculation : ITaxCalculation
     {
-        public double Calculate(double amount, ITaxSettings settings)
+        public decimal Calculate(decimal amount, ITaxSettings settings)
         {
             //we expect a 'rate'
-            double rate = settings.GetValue<double>("rate");
+            decimal rate = settings.GetValue<decimal>("rate");
             return amount * rate;
         }
     }

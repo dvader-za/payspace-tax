@@ -10,7 +10,7 @@ namespace TaxCalculatorTests
         [Test]
         public void TestStp()
         {
-            double value = new FlatRateTaxCalculation().Calculate(100, _settings);
+            decimal value = new FlatRateTaxCalculation().Calculate(100, _settings);
             Assert.AreEqual(value, 100 * 0.175, "Calculation error");
         }
     }

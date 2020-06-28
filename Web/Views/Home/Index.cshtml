@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Api.Models.TaxValue>
+
+@{
+    ViewData["Title"] = "Tax Calc";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Tax Calc</h1>
+    
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>CreateDate</th>
+            <th>Name</th>
+            <th>PostalCode</th>
+            <th>Income</th>
+            <th>Tax</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Income)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tax)
+            </td>            
+        </tr>
+}
+    </tbody>
+</table>
+
+<p>
+    <form id="Create" action="Create">        
+        <div class="form-group">
+            <span>Name</span>
+            <input id="Name" name="Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <span>Postal Code</span>
+            <input id="PostalCode" name="PostalCode" class="form-control" />            
+        </div>
+        <div class="form-group">
+            <span>Income</span>
+            <input id="Income" name="Income" class="form-control" />            
+        </div>
+        <div class="form-group">
+            <input type="button" class="btn btn-primary" value="Add" onclick="add();"/>
+        </div>
+    </form>
+</p>
+<script>
+    function add(){
+        console.log("test");
+        data = $("#Create").serialize();
+        console.log(data); 
+        $.ajax({
+            // Add new income
+            url: "Home/Create",
+            type: 'POST',
+            data: data,
+            success: function (data) {
+                //location.reload();
+                console.log("ok");
+            },
+            error: function (error) {              
+                alert("Error: "+error.responseText+" Please try again.");
+        }
+    });
+    }
+</script>

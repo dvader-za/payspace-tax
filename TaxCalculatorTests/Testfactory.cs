@@ -9,7 +9,19 @@ namespace TaxCalculatorTests
         [Test]
         public void Stp()
         {
-            var tax = CalculatorFactory.GetTaxValue(100000, "7000");
+            //System.Console.WriteLine(typeof(ProgressiveTaxCalculation).FullName);
+            ICalculatorFactory factory = new StaticCalculatorFactory();
+            var result = factory.GetCalculator("7000");
+            var tax = result.calculator.Calculate(100000, result.settings);
+            Assert.AreEqual(tax, 17500, "Calculation error");
+        }
+
+        [Test]
+        public void Dynamic()
+        {
+            var objectType = Type.GetType("TaxCalculator.ProgressiveTaxCalculation, TaxCalculator");
+            var obj = Activator.CreateInstance(objectType);
+
         }
     }
 }

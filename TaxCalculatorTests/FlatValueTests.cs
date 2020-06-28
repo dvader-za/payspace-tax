@@ -12,21 +12,21 @@ namespace TaxCalculatorTests
         [Test]
         public void TestStp()
         {
-            double value = new FlatValueCalculation().Calculate(300000, _settings);
+            decimal value = new FlatValueCalculation().Calculate(300000, _settings);
             Assert.AreEqual(value, 10000, "Calculation error");
         }
 
         [Test]
         public void TestBelowLimitAmount()
         {
-            double value = new FlatValueCalculation().Calculate(100000, _settings);
+            decimal value = new FlatValueCalculation().Calculate(100000, _settings);
             Assert.AreEqual(value, 5000, "Calculation error");
         }
 
           [Test]
         public void TestAtLimitAmount()
         {
-            double value = new FlatValueCalculation().Calculate(200000, _settings);
+            decimal value = new FlatValueCalculation().Calculate(200000, _settings);
             Assert.AreEqual(value, 10000, "Calculation error");
         }
     }

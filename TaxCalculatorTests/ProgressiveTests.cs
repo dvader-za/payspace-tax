@@ -11,7 +11,7 @@ namespace TaxCalculatorTests
         [Test]
         public void TestStp()
         {
-            double value = new ProgressiveTaxCalculation().Calculate(100, _settings);
+            decimal value = new ProgressiveTaxCalculation().Calculate(100, _settings);
             Assert.AreEqual(value, 100 * 0.1, "Calculation error");
         }
 

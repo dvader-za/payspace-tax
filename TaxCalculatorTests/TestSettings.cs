@@ -49,14 +49,14 @@ namespace TaxCalculatorTests
             }
         }
 
-        [Test]
-        public void TestIteratorOrder()
-        {
-            var names = new List<string>();
-            foreach (var tuple in _settings.GetList())
-                names.Add(tuple.name);
+        // [Test]
+        // public void TestIteratorOrder()
+        // {
+        //     var names = new List<string>();
+        //     foreach (var tuple in _settings.GetList())
+        //         names.Add(tuple.name);
 
-            CollectionAssert.IsOrdered(names);
-        }
+        //     CollectionAssert.IsOrdered(names);
+        // }
     }
 }
