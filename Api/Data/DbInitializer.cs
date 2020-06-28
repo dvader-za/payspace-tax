@@ -8,7 +8,9 @@ namespace Api.Data
     {
         public static void Initialize(CalculatorContext context)
         {
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
+            
 
             // Look for any students.
             if (context.CalculatorMappings.Any())

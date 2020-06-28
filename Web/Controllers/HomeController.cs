@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Web.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Api.Models;
 using System.Text;
 using System.Net;
@@ -33,9 +34,18 @@ namespace Web.Controllers
             {
                 using (var response = httpClient.GetAsync("http://localhost:5000/api/TaxValue").Result)
                 {
-                    string apiResponse = response.Content.ReadAsStringAsync().Result;
-                    var values = JsonConvert.DeserializeObject<List<TaxValue>>(apiResponse);
-                    return View(values);
+                    var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(response.Content.ReadAsStringAsync().Result);
+                    if (apiResponse.Success)
+                    {
+                        //List<TaxValue>
+                        var values = apiResponse.Result;
+                        return View((values as JArray).ToObject<List<TaxValue>>());
+                    }
+                    else
+                    {
+                        //not sure yet
+                        return View();
+                    }
                 }
             }
         }
@@ -44,15 +54,24 @@ namespace Web.Controllers
         public IActionResult Create(IncomeViewModel tax)
         {
             using (var httpClient = new HttpClient(_clientHandler))
-            {
+            {                
                 var content = new StringContent(JsonConvert.SerializeObject(tax), Encoding.UTF8, "application/json");
                 using (var response = httpClient.PostAsync("http://localhost:5000/api/TaxValue", content).Result)
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        string apiResponse = response.Content.ReadAsStringAsync().Result;
-                        var values = JsonConvert.DeserializeObject<List<TaxValue>>(apiResponse);
-                        return Ok(values);
+                        var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(response.Content.ReadAsStringAsync().Result);
+                        if (apiResponse.Success)
+                        {
+                            //var values = JsonConvert.DeserializeObject<List<TaxValue>>(apiResponse);
+                            var values = (apiResponse.Result as JObject).ToObject<TaxValue>();
+                            return Ok(values);
+                        }
+                        else
+                        {
+                            //do error stuff
+                            return BadRequest(apiResponse.Message);
+                        }
                     }
                     else
                     {

@@ -24,24 +24,12 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Income)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tax)
-            </td>            
+            <td>@item.Id</td>
+            <td>@item.CreateDate.ToString("yyyy-MMM-dd HH:mm")</td>
+            <td>@item.Name</td>
+            <td>@item.PostalCode</td>
+            <td>@item.Income.ToString("0.00")</td>
+            <td>@item.Tax.ToString("0.00")</td>            
         </tr>
 }
     </tbody>
@@ -68,20 +56,24 @@
 </p>
 <script>
     function add(){
-        console.log("test");
+        if (isNaN($("#Income").val()))
+        {
+            alert("Income should be numeric");
+            return false;
+        }
         data = $("#Create").serialize();
         console.log(data); 
         $.ajax({
             // Add new income
             url: "Home/Create",
-            type: 'POST',
+            type: "POST",
             data: data,
             success: function (data) {
-                //location.reload();
+                location.reload();
                 console.log("ok");
             },
             error: function (error) {              
-                alert("Error: "+error.responseText+" Please try again.");
+                alert(error.responseText);
         }
     });
     }

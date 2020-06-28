@@ -11,7 +11,9 @@ namespace Api.Models
         public DateTime CreateDate { get; set; }
         public string Name { get; set; }
         public string PostalCode { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Income { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Tax { get; set; }
 
         public TaxValue()

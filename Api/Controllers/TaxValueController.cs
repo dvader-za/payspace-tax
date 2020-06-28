@@ -25,25 +25,33 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaxValue>>> Get()
+        public async Task<ActionResult<ApiResponse>> Get()
         {
-            return await Task.FromResult(_context.TaxValues.ToList());
+            try
+            {
+                var result = await Task.FromResult(_context.TaxValues.ToList());
+                return new ActionResult<ApiResponse>(new ApiResponse { Success = true, Result = result });
+            }
+            catch (Exception ex)
+            {
+                return new ActionResult<ApiResponse>(new ApiResponse { Success = false, Message = ex.Message, Details = ex.Source, StackTrace = ex.StackTrace });
+            }
         }
 
         [HttpPost]
-        public async Task<ActionResult<TaxValue>> Create(TaxCalculationInput taxInput)
+        public async Task<ActionResult<ApiResponse>> Create(TaxCalculationInput taxInput)
         {
             try
             {
                 var result = _factory.GetCalculator(taxInput.PostalCode);
                 var tax = result.calculator.Calculate(taxInput.Income, result.settings);
-                var addResult = _context.TaxValues.Add(new TaxValue { Name = taxInput.Name, PostalCode = taxInput.PostalCode, Income = taxInput.Income, Tax = tax });
+                var addResult = _context.TaxValues.Add(new TaxValue { Name = taxInput.Name, PostalCode = taxInput.PostalCode.ToUpper(), Income = taxInput.Income, Tax = tax });
                 var commitResult = await _context.SaveChangesAsync();
-                return addResult.Entity;
+                return new ActionResult<ApiResponse>(new ApiResponse { Success = true, Result = addResult.Entity });
             }
             catch (Exception ex)
             {
-                return new ApiErrorResponse();
+                return new ActionResult<ApiResponse>(new ApiResponse { Success = false, Message = ex.Message, Details = ex.Source, StackTrace = ex.StackTrace });
             }
         }
     }
