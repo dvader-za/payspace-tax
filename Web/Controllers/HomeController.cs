@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Web.Models;
@@ -36,16 +33,9 @@ namespace Web.Controllers
                 {
                     var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(response.Content.ReadAsStringAsync().Result);
                     if (apiResponse.Success)
-                    {
-                        //List<TaxValue>
-                        var values = apiResponse.Result;
-                        return View((values as JArray).ToObject<List<TaxValue>>());
-                    }
+                        return View((apiResponse.Result as JArray).ToObject<List<TaxValue>>());
                     else
-                    {
-                        //not sure yet
-                        return View();
-                    }
+                        return BadRequest(apiResponse.Message);
                 }
             }
         }
@@ -63,15 +53,11 @@ namespace Web.Controllers
                         var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(response.Content.ReadAsStringAsync().Result);
                         if (apiResponse.Success)
                         {
-                            //var values = JsonConvert.DeserializeObject<List<TaxValue>>(apiResponse);
                             var values = (apiResponse.Result as JObject).ToObject<TaxValue>();
                             return Ok(values);
                         }
                         else
-                        {
-                            //do error stuff
                             return BadRequest(apiResponse.Message);
-                        }
                     }
                     else
                     {

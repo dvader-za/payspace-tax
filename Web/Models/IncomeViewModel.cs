@@ -1,8 +1,5 @@
-using System;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Web.Models
-{    
+{
     public class IncomeViewModel
     {
         public IncomeViewModel()
