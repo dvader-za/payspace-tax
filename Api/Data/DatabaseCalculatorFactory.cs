@@ -6,7 +6,7 @@ namespace Api.Data
 {
     public class DatabaseCalculatorFactory : ICalculatorFactory
     {
-        private CalculatorContext _context;
+        private readonly CalculatorContext _context;
         public DatabaseCalculatorFactory(CalculatorContext context)
         {
             _context = context;

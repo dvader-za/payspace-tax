@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Api.Models;
 
@@ -18,7 +17,7 @@ namespace Api.Data
                 return;   // DB has been seeded
             }
 
-            var calculatorMapping = new CalculatorMapping[]
+            var calculatorMapping = new[]
             {
                 new CalculatorMapping{PostalCode="7441", ClassName="TaxCalculator.ProgressiveTaxCalculation, TaxCalculator", Settings="{\"8350\":\"0.1\",\"33950\":\"0.15\",\"82250\":\"0.25\",\"171550\":\"0.28\",\"372950\":\"0.33\",\"100000000\":\"0.35\"}"},
                 new CalculatorMapping{PostalCode="A100", ClassName="TaxCalculator.FlatValueCalculation, TaxCalculator", Settings="{\"flat_amount\":\"10000\",\"limit_amount\":\"200000\",\"under_limit_rate\":\"0.05\"}"},

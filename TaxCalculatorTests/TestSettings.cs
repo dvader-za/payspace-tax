@@ -1,13 +1,13 @@
 using NUnit.Framework;
 using TaxCalculator;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TaxCalculatorTests
 {
     public class TestSettings
     {
-        private ITaxSettings _settings = new DictionaryTaxSettings("{\"test1\":\"value1\",\"test2\":\"value2\",\"testint\":\"123\",\"1\":\"value1\",\"2\":\"value2\",\"3\":\"value3\",\"10\":\"value10\"}");
+        private readonly ITaxSettings _settings = new DictionaryTaxSettings("{\"test1\":\"value1\",\"test2\":\"value2\",\"testint\":\"123\",\"1\":\"value1\",\"2\":\"value2\",\"3\":\"value3\",\"10\":\"value10\"}");
 
         [Test]
         public void TestStp()
@@ -25,7 +25,7 @@ namespace TaxCalculatorTests
         {
             try
             {
-                string value1 = _settings.GetValue<string>("test3");
+                var value1 = _settings.GetValue<string>("test3");
             }
             catch (CalculationException)
             {
@@ -42,10 +42,9 @@ namespace TaxCalculatorTests
                 results[item.name] = item.value;
 
             Assert.AreEqual(results.Count, _settings.GetCount());
-            foreach (string key in results.Keys)
+            foreach (var key in results.Keys.Where(key => results[key] != _settings.GetValue<string>(key)))
             {
-                if (results[key] != _settings.GetValue<string>(key))
-                    Assert.Fail("Value doesn't match");
+                Assert.Fail("Value doesn't match");
             }
         }
 

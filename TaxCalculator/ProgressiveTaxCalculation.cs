@@ -11,20 +11,23 @@ namespace TaxCalculator
 
             decimal currentMin = 0;
             decimal currentTax = 0;
-            foreach (var bracket in settings.GetList())
+            foreach (var (name, value) in settings.GetList())
             {
                 if (amount < currentMin)
                     break;
                 try
                 {
-                    decimal upperBound = Convert.ToDecimal(bracket.name);
-                    decimal taxPerc = Convert.ToDecimal(bracket.value);
+                    var upperBound = Convert.ToDecimal(name);
+                    var taxPerc = Convert.ToDecimal(value);
                     var bracketAmount = Math.Min(amount, upperBound) - currentMin;
                     var taxAmount = bracketAmount * taxPerc;
                     currentTax += taxAmount;
                     currentMin = upperBound;
                 }
-                catch (Exception) { }
+                catch
+                {
+                    // ignored
+                }
             }
             return currentTax;
         }

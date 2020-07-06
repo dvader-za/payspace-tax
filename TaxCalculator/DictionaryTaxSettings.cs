@@ -7,15 +7,12 @@ namespace TaxCalculator
 {
     public class DictionaryTaxSettings : ITaxSettings
     {
-        public DictionaryTaxSettings()
-        {
-        }
-
         public DictionaryTaxSettings(string json)
         {
             Load(json);
         }
-        protected Dictionary<string, object> _settings = new Dictionary<string, object>();
+
+        private Dictionary<string, object> _settings = new Dictionary<string, object>();
 
         public void Load(string json)
         {
@@ -48,15 +45,15 @@ namespace TaxCalculator
             }
             catch (Exception)
             {
-                return key1.CompareTo(key2);
+                return String.Compare(key1, key2, StringComparison.Ordinal);
             }
         }
 
         public IEnumerable<(string name, string value)> GetList()
         {
             var keys = _settings.Keys.ToList();
-            keys.Sort((key1, key2) => Compare(key1, key2));
-            foreach (string key in keys)
+            keys.Sort(Compare);
+            foreach (var key in keys)
                 yield return (name: key, value: GetValue<string>(key));
         }
 

@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Api.Models
 {
     public class ApiResponse
